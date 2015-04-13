@@ -11,6 +11,7 @@ public class ChainScript : MonoBehaviour {
 	public Sprite link;
 	public Sprite head;
 	public int playerNumber = 0;
+	public int minChainLength = 5;
 	// Use this for initialization
 	void Start () {
 	//construct the chain
@@ -48,13 +49,14 @@ public class ChainScript : MonoBehaviour {
 		//first player
 		if (playerNumber == 0) {
 			input = new Vector2 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"));
-		}
-		else if (playerNumber == 1) {
+		} else if (playerNumber == 1) {
 			input = new Vector2 (Input.GetAxis ("Horizontal2"), Input.GetAxis ("Vertical2"));
+		} else if (playerNumber == 2) {
+			input = new Vector2 (Input.GetAxis ("Horizontal3"), Input.GetAxis ("Vertical3"));
+		} else if (playerNumber == 3) {
+			input = new Vector2 (Input.GetAxis ("Horizontal4"), Input.GetAxis ("Vertical4"));
 		}
-		//if (Input.GetButtonDown ("Fire1")) {
-		//	addChainLength();
-		//}
+
 	}
 	void FixedUpdate(){
 		if (Mathf.Abs (input.x) >=.2f) {
@@ -80,6 +82,17 @@ public class ChainScript : MonoBehaviour {
 			chainLinks[currentChainLength-1].GetComponent<SpriteRenderer>().sprite = link;
 			chainLinks[currentChainLength-1].GetComponent<ChainHeadScript>().isHead = false;
 			currentChainLength++;
+		}
+	}
+
+	public void subChainLength()
+	{
+		//min chain length
+		if (currentChainLength >= minChainLength) {
+			Destroy(chainLinks[currentChainLength-1]);
+			chainLinks[currentChainLength -2].GetComponent<SpriteRenderer>().sprite = head;
+			chainLinks[currentChainLength -2].GetComponent<ChainHeadScript>().isHead = true;
+			currentChainLength--;
 		}
 	}
 }
